@@ -8,7 +8,7 @@ namespace C__Final_Project_01.Models
 {
     internal class Room
     {
-        public int RoomID { get; set; }                //------ Unique identifier for the room ------
-        public string RoomName { get; set; }         //------ Room number or name ------
+        public int roomID { get; set; }                //------ Unique identifier for the room ------
+        public string roomName { get; set; }         //------ Room number or name ------
     }
 }

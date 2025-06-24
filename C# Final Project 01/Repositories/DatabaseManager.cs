@@ -4,60 +4,64 @@ using System.Data.SQLite;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace C__Final_Project_01.Repositories
 {
-    public static class DatabaseManager
+    internal static class DatabaseManager
     {
-        private static readonly string dbFile = "unicomtic.db";
-        private static string connectionString = $"Data Source={dbFile};Version=3;";   //------ Connect the SQLite db file ------
-
-        public static void InitializeDatabase()
+        public static SQLiteConnection GetConnection()
         {
-            using (var connection = new SQLiteConnection(connectionString))
-            {
-                connection.Open();
+            return DbConfig.GetConnection();
+        }
 
-                CreateTable(connection, "Users",
+        public static void CreateTables()
+        {
+            using (var getDbConn = DbConfig.GetConnection())
+            {
+                //connection.Open();
+                string[] createTableStatements = new string[]
+                {
                     @"CREATE TABLE IF NOT EXISTS Users (
                         Id INTEGER PRIMARY KEY AUTOINCREMENT,
                         Username TEXT NOT NULL UNIQUE,
                         Password TEXT NOT NULL,
                         Role TEXT NOT NULL
-                    );");
+                    );",
 
-                CreateTable(connection, "Courses",
+
                     @"CREATE TABLE IF NOT EXISTS Courses (
-                        Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        CourseId INTEGER PRIMARY KEY AUTOINCREMENT,
                         CourseName TEXT NOT NULL
-                    );");
+                    );",
 
-                CreateTable(connection, "Subjects",
+
                     @"CREATE TABLE IF NOT EXISTS Subjects (
                         Id INTEGER PRIMARY KEY AUTOINCREMENT,
                         SubjectName TEXT NOT NULL,
                         CourseId INTEGER,
                         FOREIGN KEY(CourseId) REFERENCES Courses(Id)
-                    );");
+                    );",
 
-                CreateTable(connection, "Students",
+
                     @"CREATE TABLE IF NOT EXISTS Students (
-                        Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        Name TEXT NOT NULL,
-                        CourseId INTEGER,
+                        StudentID INTEGER PRIMARY KEY AUTOINCREMENT,
+                        StudentName TEXT NOT NULL,
+                        DateOfbirth TEXT,
+                        Email TEXT,                        
                         FOREIGN KEY(CourseId) REFERENCES Courses(Id)
-                    );");
+                    );",
 
-                CreateTable(connection, "Exams",
+
                     @"CREATE TABLE IF NOT EXISTS Exams (
                         Id INTEGER PRIMARY KEY AUTOINCREMENT,
                         ExamName TEXT NOT NULL,
                         SubjectId INTEGER,
                         ExamDate TEXT,
                         FOREIGN KEY(SubjectId) REFERENCES Subjects(Id)
-                    );");
+                    );",
 
-                CreateTable(connection, "Marks",
+
                     @"CREATE TABLE IF NOT EXISTS Marks (
                         Id INTEGER PRIMARY KEY AUTOINCREMENT,
                         StudentId INTEGER,
@@ -65,16 +69,16 @@ namespace C__Final_Project_01.Repositories
                         Score INTEGER,
                         FOREIGN KEY(StudentId) REFERENCES Students(Id),
                         FOREIGN KEY(ExamId) REFERENCES Exams(Id)
-                    );");
+                    );",
 
-                CreateTable(connection, "Rooms",
+
                     @"CREATE TABLE IF NOT EXISTS Rooms (
                         Id INTEGER PRIMARY KEY AUTOINCREMENT,
                         RoomName TEXT NOT NULL,
                         RoomType TEXT NOT NULL
-                    );");
+                    );",
 
-                CreateTable(connection, "Timetables",
+
                     @"CREATE TABLE IF NOT EXISTS Timetables (
                         Id INTEGER PRIMARY KEY AUTOINCREMENT,
                         SubjectId INTEGER,
@@ -83,19 +87,41 @@ namespace C__Final_Project_01.Repositories
                         TimeSlot TEXT,
                         FOREIGN KEY(SubjectId) REFERENCES Subjects(Id),
                         FOREIGN KEY(RoomId) REFERENCES Rooms(Id)
-                    );");
+                    );"
+                };
+                foreach (var sql in createTableStatements)
+                {
+                    using (var command = new SQLiteCommand(sql, getDbConn))
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                }
+
+                MessageBox.Show("Successfully Tables Created!!!");
             }
         }
-
-        private static void CreateTable(SQLiteConnection connection, string tableName, string createSql)
+        // Add a new user to the Users table (plain text password as per assignment)
+        public static void AddUser(string username, string password, string role)
         {
-            using (var command = new SQLiteCommand(createSql, connection))
+            using (var conn = DbConfig.GetConnection())
             {
-                command.ExecuteNonQuery();
-                Console.WriteLine($"{tableName} table created successfully.");
+                string query = "INSERT INTO Users (Username, Password,Role) VALUES (@username, @password,@role)";
+                using (var cmd = new SQLiteCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@username", username);
+                    cmd.Parameters.AddWithValue("@password", password);
+                    //cmd.Parameters.AddWithValue("@role", role);
+                    try
+                    {
+                        cmd.ExecuteNonQuery();
+                        MessageBox.Show("User added successfully!");
+                    }
+                    catch (SQLiteException ex)
+                    {
+                        MessageBox.Show("Error adding user: " + ex.Message);
+                    }
+                }
             }
         }
-        
-
     }
 }

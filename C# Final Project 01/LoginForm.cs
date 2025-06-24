@@ -19,30 +19,7 @@ namespace C__Final_Project_01
             InitializeComponent();
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox2_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label1_Click_1(object sender, EventArgs e)
-        {
-
-        }
+        
 
         private void btn_login_Click(object sender, EventArgs e)
         {
@@ -52,20 +29,33 @@ namespace C__Final_Project_01
             if (string.IsNullOrWhiteSpace(username) || string.IsNullOrEmpty(password))
             {
                 lbl_error.Text = "Please enter username and password.";
+                btn_login.Enabled = true;
                 return;
             }
-
-            if (LoginController.Login(username, password))
+            try
             {
-                this.Hide();
-                var main = new MainFormController(); // Dashboard
-                main.Show();
+                string role = LoginController.Login(username, password);
+                if (!string.IsNullOrEmpty(role))
+                {
+                    this.Hide();
+                    var main = new MainForm(); // Dashboard
+                    main.Show();
+                }
+                else
+                {
+                    lbl_error.Text = "Wrong username or password.";
+                    txt_password.Clear();
+                }
             }
-            else
+            catch (Exception ex) 
             {
-                lbl_error.Text = "Wrong username or password.";
+                MessageBox.Show("An error occurred during login."+ex.Message);
+                // Optionally log ex.Message
             }
-        
+            finally
+            {
+                btn_login.Enabled = true;
+            }
         }
     }
 }

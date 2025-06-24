@@ -24,22 +24,37 @@ namespace C__Final_Project_01
 
         private void button1_Click(object sender, EventArgs e)
         {
-
+            new CourseForm().ShowDialog();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-
+            new StudentForm().ShowDialog();
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-
+            new TimetableForm().ShowDialog();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
 
         }
+        private void btn_Exam_Click(object sender, EventArgs e)
+        {
+            new ExamForm().ShowDialog();
+        }
+        private void btn_Mark_Click(object sender, EventArgs e)
+        {
+            new MarkForm().ShowDialog();
+        }
+        private void btn_LogOut_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            new LoginForm().Show();
+        }
+
+       
     }
 }

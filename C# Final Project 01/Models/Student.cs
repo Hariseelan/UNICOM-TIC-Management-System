@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace C__Final_Project_01.Models
 {
-    internal class Student
+    public class Student
     {
         public int StudentID { get; set; }            // Unique identifier for the student
         public string StudentName { get; set; }       // Student's first name
-        public DateTime DateOfBirth { get; set; }     // DOB for the student
+        public DateTime DateOfbirth { get; set; }     // DOB for the student
         public string Email { get; set; }             // Contact email
         public string CourseID { get; set; }          //------ Foreign key to the CourseID this student belongs to ------
     }
