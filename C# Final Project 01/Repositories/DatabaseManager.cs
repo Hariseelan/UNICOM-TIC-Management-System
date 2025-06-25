@@ -1,10 +1,13 @@
-﻿using System;
+﻿using C__Final_Project_01.Models;
+using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace C__Final_Project_01.Repositories
 {
@@ -48,7 +51,8 @@ namespace C__Final_Project_01.Repositories
                         StudentID INTEGER PRIMARY KEY AUTOINCREMENT,
                         StudentName TEXT NOT NULL,
                         DateOfbirth TEXT,
-                        Email TEXT,                        
+                        Email TEXT,
+                        CourseId INTEGER,
                         FOREIGN KEY(CourseId) REFERENCES Courses(Id)
                     );",
 
@@ -121,7 +125,11 @@ namespace C__Final_Project_01.Repositories
                         MessageBox.Show("Error adding user: " + ex.Message);
                     }
                 }
+               
             }
+
         }
+
+       
     }
 }
