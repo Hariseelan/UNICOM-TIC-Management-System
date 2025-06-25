@@ -17,33 +17,33 @@ namespace C__Final_Project_01
             
             
         }
-        /*private async void LoadStudents()
+        private async void LoadStudents()
         {
 
-            viewstudent.DataSource = await _controller.GetAllAsync();
+            //viewstudent.DataSource = await _controller.GetAllAsync();
         }
 
 
         private void StudentForm_Load(object sender, EventArgs e)
         {
 
-        }*/
+        }
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
             // Parse StudentID
-            /*if (!int.TryParse(studentid.Text, out int parsedStudentId))
+            if (!int.TryParse(studentid.Text, out int parsedStudentId))
             {
                 MessageBox.Show("Invalid Student ID. Please enter a valid number.");
                 return;
             }
 
-            // Parse DateOfbirth
+             //Parse DateOfbirth
             if (!DateTime.TryParse(dateofbirth.Text, out DateTime parsedDateOfBirth))
             {
                 MessageBox.Show("Invalid Date of Birth. Please enter a valid date.");
                 return;
-            }*/
+            }
 
             Student student = new Student
             {
@@ -60,20 +60,20 @@ namespace C__Final_Project_01
         }
         
 
-/*        private void btnUpdate_Click_1(object sender, EventArgs e)
+        private void btnUpdate_Click_1(object sender, EventArgs e)
         {
             if (selectedId == -1) return;
 
             var student = new Student
             {
                 StudentID = int.Parse(studentid.Text),
-                Name = name.Text,
+                StudentName = name.Text,
                 DateOfbirth = DateTime.Parse(dateofbirth.Text),
                 Email = email.Text
 
 
             };
-            _controller.UpdateAsync(student);
+            //_controller.UpdateAsync(student);
             LoadStudents();
             
         }
@@ -82,7 +82,7 @@ namespace C__Final_Project_01
         {
             if (selectedId == -1) return;
 
-            _controller.DeleteAsync(selectedId);
+            //_controller.DeleteAsync(selectedId);
             LoadStudents();
         }
 
@@ -95,6 +95,6 @@ namespace C__Final_Project_01
                 name.Text = row.Cells["Name"].Value.ToString();
                 email.Text = row.Cells["Email"].Value.ToString();
             }
-        }*/
+        }
     }
 }
