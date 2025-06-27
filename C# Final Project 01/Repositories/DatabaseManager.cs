@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Security.Cryptography;
-using System.Text;
 
 namespace C__Final_Project_01.Repositories
 {
@@ -98,6 +97,10 @@ namespace C__Final_Project_01.Repositories
                     using (var command = new SQLiteCommand(sql, getDbConn))
                     {
                         command.ExecuteNonQuery();
+                        //DatabaseManager.AddUser("Admin", "admin123", "admin");
+                        DatabaseManager.AddUserIfNotExists("Admin", "admin123", "admin");
+
+
                     }
                 }
 
@@ -105,16 +108,31 @@ namespace C__Final_Project_01.Repositories
             }
         }
         // Add a new user to the Users table (plain text password as per assignment)
-        public static void AddUser(string username, string password, string role)
+
+
+        /*public static void AddUser(string username, string password, string role)
         {
             using (var conn = DbConfig.GetConnection())
             {
+                
+                string checkQuery = "SELECT COUNT(*) FROM Users WHERE Username = @username";
+                using (var checkCmd = new SQLiteCommand(checkQuery, conn))
+                {
+                    checkCmd.Parameters.AddWithValue("@username", username);
+                    long count = (long)checkCmd.ExecuteScalar();
+                    if (count > 0)
+                    {
+                        MessageBox.Show($"User '{username}' already exists.");
+                        return;
+                    }
+                }
+
                 string query = "INSERT INTO Users (Username, Password,Role) VALUES (@username, @password,@role)";
                 using (var cmd = new SQLiteCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@username", username);
                     cmd.Parameters.AddWithValue("@password", password);
-                    //cmd.Parameters.AddWithValue("@role", role);
+                    cmd.Parameters.AddWithValue("@role", role);
                     try
                     {
                         cmd.ExecuteNonQuery();
@@ -127,9 +145,52 @@ namespace C__Final_Project_01.Repositories
                 }
                
             }
+            
 
+        }*/
+        public static void AddUserIfNotExists(string username, string password, string role)
+        {
+            using (var conn = DbConfig.GetConnection())
+            {
+                //conn.Open();
+
+                // Check if user already exists (case-insensitive)
+                string checkQuery = "SELECT COUNT(*) FROM Users WHERE LOWER(Username) = LOWER(@username)";
+                using (var checkCmd = new SQLiteCommand(checkQuery, conn))
+                {
+                    checkCmd.Parameters.AddWithValue("@username", username);
+                    long count = (long)checkCmd.ExecuteScalar();
+
+                    if (count > 0)
+                    {
+                        // User exists, silently ignore without message
+                        return;
+                    }
+                }
+
+                // User not found, insert new record
+                string insertQuery = "INSERT INTO Users (Username, Password, Role) VALUES (@username, @password, @role)";
+                using (var insertCmd = new SQLiteCommand(insertQuery, conn))
+                {
+                    insertCmd.Parameters.AddWithValue("@username", username);
+                    insertCmd.Parameters.AddWithValue("@password", password);
+                    insertCmd.Parameters.AddWithValue("@role", role);
+
+                    try
+                    {
+                        insertCmd.ExecuteNonQuery();
+                        MessageBox.Show("User added successfully!");
+                    }
+                    catch (SQLiteException ex)
+                    {
+                        MessageBox.Show("Error adding user: " + ex.Message);
+                    }
+                }
+            }
         }
 
-       
+
+
+
     }
 }

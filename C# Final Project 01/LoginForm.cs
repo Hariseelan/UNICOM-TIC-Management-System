@@ -17,6 +17,7 @@ namespace C__Final_Project_01
         public LoginForm()
         {
             InitializeComponent();
+            //txt_password.PasswordChar = '*';
         }
 
         
@@ -25,6 +26,8 @@ namespace C__Final_Project_01
         {
             string username = txt_username.Text.Trim();
             string password = txt_password.Text;
+
+            
 
             if (string.IsNullOrWhiteSpace(username) || string.IsNullOrEmpty(password))
             {
@@ -57,5 +60,7 @@ namespace C__Final_Project_01
                 btn_login.Enabled = true;
             }
         }
+
+      
     }
 }

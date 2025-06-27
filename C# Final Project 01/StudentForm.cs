@@ -14,13 +14,14 @@ namespace C__Final_Project_01
         public StudentForm()
         {
             InitializeComponent();
-            
-            
+            _controller = new StudentController();
+
         }
         private async void LoadStudents()
         {
 
             //viewstudent.DataSource = await _controller.GetAllAsync();
+
         }
 
 
@@ -55,6 +56,7 @@ namespace C__Final_Project_01
 
         StudentController studentController = new StudentController();
         studentController.AddStudent(student);
+        LoadStudents();
         //MessageBox.Show();
         
         }

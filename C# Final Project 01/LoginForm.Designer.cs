@@ -45,7 +45,6 @@
             this.txt_username.Name = "txt_username";
             this.txt_username.Size = new System.Drawing.Size(231, 30);
             this.txt_username.TabIndex = 0;
-            //this.txt_username.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // txt_password
             // 
@@ -54,7 +53,7 @@
             this.txt_password.Name = "txt_password";
             this.txt_password.Size = new System.Drawing.Size(231, 30);
             this.txt_password.TabIndex = 1;
-            //this.txt_password.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
+            //this.txt_password.TextChanged += new System.EventHandler(this.txt_password_TextChanged);
             // 
             // lbl_username
             // 
@@ -66,7 +65,6 @@
             this.lbl_username.Size = new System.Drawing.Size(102, 25);
             this.lbl_username.TabIndex = 2;
             this.lbl_username.Text = "Username";
-            //this.lbl_username.Click += new System.EventHandler(this.label1_Click);
             // 
             // lbl_password
             // 
@@ -78,7 +76,6 @@
             this.lbl_password.Size = new System.Drawing.Size(98, 25);
             this.lbl_password.TabIndex = 3;
             this.lbl_password.Text = "Password";
-            //this.lbl_password.Click += new System.EventHandler(this.label2_Click);
             // 
             // btn_login
             // 
@@ -101,7 +98,6 @@
             this.label1.Size = new System.Drawing.Size(619, 46);
             this.label1.TabIndex = 5;
             this.label1.Text = "UNICOM TIC Managment System";
-            //this.label1.Click += new System.EventHandler(this.label1_Click_1);
             // 
             // label2
             // 
